@@ -1,12 +1,18 @@
-import React from "react";
-import "./App.css";
-import Checklist from "./components/Checklist";
+import React from 'react';
+import './App.css';
+import { BrowserRouter as Router } from 'react-router-dom';
+import Sidebar from './components/Sidebar';
 
 function App() {
   return (
-    <div className="App">
-      <Checklist />
-    </div>
+    <Router>
+      <div className="App">
+        <Sidebar />
+          <Checklist />
+        {/* If you have other routes or components, place them here */}
+      </div>
+    </Router>
+
   );
 }
 
