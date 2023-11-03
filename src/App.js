@@ -8,9 +8,11 @@ function App() {
     <Router>
       <div className="App">
         <Sidebar />
+          <Checklist />
         {/* If you have other routes or components, place them here */}
       </div>
     </Router>
+
   );
 }
 
