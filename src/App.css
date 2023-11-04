@@ -1,6 +1,17 @@
+.pageWrapper {
+  display:flex;
+  align-items: center;
+position: relative;
+align-items: center;
+}
+
+
+
+
 .App {
   text-align: center;
 }
+
 
 .App-logo {
   height: 40vmin;

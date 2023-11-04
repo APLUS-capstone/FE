@@ -1,28 +1,25 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import { Link } from 'react-router-dom';
-import { ReactComponent as PlusButton } from '../assets/images/plus.svg';
-import { ReactComponent as ChatIcon } from '../assets/images/textballon.svg';
+import React, { useState } from "react";
+import styled from "styled-components";
+import { Link } from "react-router-dom";
+import { ReactComponent as PlusButton } from "../assets/images/plus.svg";
+import { ReactComponent as ChatIcon } from "../assets/images/textballon.svg";
 const Sidebar = () => {
   const [chatRooms, setChatRooms] = useState([]);
 
   const handleNewChat = () => {
     const newChatName = `Chatroom${chatRooms.length + 1}`;
-    setChatRooms(prevRooms => [...prevRooms, newChatName]);
-  }
-
+    setChatRooms((prevRooms) => [...prevRooms, newChatName]);
+  };
 
   return (
     <SidebarContainer>
-      <NameContainer>
-        APLUS
-      </NameContainer>
+      <NameContainer>APLUS</NameContainer>
       <NewbuttonContainer onClick={handleNewChat}>
         <PlusButton />
         New chat
       </NewbuttonContainer>
       <ChatList>
-        {chatRooms.map(chat => (
+        {chatRooms.map((chat) => (
           <StyledLink to={`/${chat}`} key={chat}>
             <ChatItem>
               <Chaticon />
@@ -33,10 +30,10 @@ const Sidebar = () => {
       </ChatList>
     </SidebarContainer>
   );
-}
+};
 const StyledLink = styled(Link)`
-text-decoration: none; 
-color: #E6E6E6; 
+  text-decoration: none;
+  color: #e6e6e6;
 `;
 const NameContainer = styled.div`
   width: 17rem;
@@ -46,8 +43,8 @@ const NameContainer = styled.div`
 `;
 const Chaticon = styled(ChatIcon)`
   width: 1rem;
-  height: 1rem; 
-  margin-right: 0.5rem; 
+  height: 1rem;
+  margin-right: 0.5rem;
 `;
 const SidebarContainer = styled.div`
   display: flex;
@@ -55,8 +52,10 @@ const SidebarContainer = styled.div`
   align-items: stretch;
   width: 17rem;
   height: 100vh;
-  background-color: #45504F;
- 
+  background-color: #45504f;
+  position: absolute;
+  left: 0;
+  top: 0;
   overflow: hidden;
 `;
 
@@ -65,7 +64,6 @@ const ChatList = styled.div`
   flex-direction: column;
   gap: 0.5rem;
   overflow-y: auto;
-  
 `;
 const NewbuttonContainer = styled.button`
   display: flex;
@@ -74,29 +72,27 @@ const NewbuttonContainer = styled.button`
   height: 3rem;
   gap: 0.5rem;
   width: 17rem;
-  background-color: #45504F;
-  border-top: 0.125rem solid #FFFFFF;
-  border-bottom: 0.125rem solid #FFFFFF;
+  background-color: #45504f;
+  border-top: 0.125rem solid #ffffff;
+  border-bottom: 0.125rem solid #ffffff;
   border-left: none;
   border-right: none;
   cursor: pointer;
   outline: none;
   &:hover {
-    background-color: #5C6867;
+    background-color: #5c6867;
   }
   font-size: 1.5rem;
-  color: #B3B3B3;
+  color: #b3b3b3;
   margin-bottom: 1rem;
 `;
 
-
 const ChatItem = styled.div`
   padding: 0.5rem;
-  background: #45504F;
+  background: #45504f;
   border-radius: 0.5rem;
   font-size: 1rem;
   height: 3vh;
-  
 `;
 
 export default Sidebar;
