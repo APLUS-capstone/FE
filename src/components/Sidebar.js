@@ -36,9 +36,12 @@ const StyledLink = styled(Link)`
   color: #e6e6e6;
 `;
 const NameContainer = styled.div`
+  /* text-align: center; */
+  padding-left: 1rem;
   width: 17rem;
   height: 3rem;
   font-size: 2rem;
+  font-weight: 700;
   margin-top: 0.5rem;
 `;
 const Chaticon = styled(ChatIcon)`

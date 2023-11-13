@@ -30,7 +30,7 @@ const Checklist = () => {
       questionsCount: parseInt(questionsCount, 10) || 0, //정수값
       language: languageType,
     };
-    console.log(formData); //나중에 DB에 보내야하는 부분
+    console.log(formData); //나중에 DB에 보내야하는 부분이 될것임 (사용자가 입력한 문제 폼)
   };
 
   return (
