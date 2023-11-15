@@ -1,10 +1,21 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import CustomBtn from "./CustomBtn";
+import RadioGroup from "./RadioGroup";
 const Checklist = () => {
   const [questionTypeRadio, setQuestionTypeRadio] = useState("multipleChoice"); //문제유형
   const [languageType, setLanguageType] = useState("kor"); // 언어
   const [optionsCount, setOptionsCount] = useState(0); // 보기 수
   const [questionsCount, setQuestionsCount] = useState(""); //문제수
+
+  const FormSection = ({ title, children }) => {
+    return (
+      <div>
+        <h3>{title}</h3>
+        {children}
+      </div>
+    );
+  };
 
   const handleQuestionTypeChange = (e) => {
     setQuestionTypeRadio(e.target.value);
@@ -38,92 +49,6 @@ const Checklist = () => {
       onSubmit={handleSubmit}
       isMultipleChoice={questionTypeRadio === "multipleChoice"}
     >
-      <h3>문제 유형 선택</h3>
-      <div>
-        <RadioInputs>
-          <Radio>
-            <input
-              type="radio"
-              name="questionType"
-              value="multipleChoice"
-              onChange={handleQuestionTypeChange}
-              checked={questionTypeRadio === "multipleChoice"}
-            />
-            <span className="name">객관식</span>
-          </Radio>
-          <Radio>
-            <input
-              type="radio"
-              name="questionType"
-              value="essayQuestion"
-              onChange={handleQuestionTypeChange}
-              checked={questionTypeRadio === "essayQuestion"}
-            />
-            <span className="name">주관식</span>
-          </Radio>
-          <Radio>
-            <input
-              type="radio"
-              name="questionType"
-              value="shortAnswer"
-              onChange={handleQuestionTypeChange}
-              checked={questionTypeRadio === "shortAnswer"}
-            />
-            <span className="name">단답형</span>
-          </Radio>
-        </RadioInputs>
-      </div>
-      {questionTypeRadio === "multipleChoice" && (
-        <div>
-          <h3>보기 개수</h3>
-          <InputText
-            type="number"
-            placeholder="선지 개수 입력"
-            value={optionsCount}
-            onChange={handleOptionsCountChange}
-          />
-        </div>
-      )}
-
-      <h3>문제수 입력</h3>
-      <InputText
-        type="text"
-        placeholder="10"
-        value={questionsCount}
-        onChange={handleQuestionsCountChange}
-      />
-
-      <h3>언어 선택</h3>
-      <RadioInputs>
-        <Radio>
-          <input
-            type="radio"
-            name="languageType"
-            value="kor"
-            onChange={handleLanguageTypeChange}
-            checked={languageType === "kor"}
-          />
-          <span className="name">한국어</span>
-        </Radio>
-        <Radio>
-          <input
-            type="radio"
-            name="languageType"
-            value="eng"
-            onChange={handleLanguageTypeChange}
-            checked={languageType === "eng"}
-          />
-          <span className="name">영어</span>
-        </Radio>
-      </RadioInputs>
-      {/* <select name="languageType" id="languageType">
-        <option value="kor">한국어</option>
-        <option value="en">영어</option>
-      </select> */}
-
-      {/* <h3>PDF 강의 자료 업로드</h3>
-      <input type="file" accept=".pdf" onChange={handleFileChange} />
-      {file && <p>{file.name}</p>} */}
       <Form>
         <FormTitle>Upload your file</FormTitle>
         <FormParagraph>PDF file</FormParagraph>
@@ -133,9 +58,55 @@ const Checklist = () => {
           <FileInput type="file" accept=".pdf" required id="file-input" />
         </DropContainer>
       </Form>
-      <StyledButton style={{ verticalAlign: "middle" }}>
-        <ButtonSpan>Submit</ButtonSpan>
-      </StyledButton>
+      {/* 파일 선택이 되면, 이걸 백에 보내서 string 변환해옴 */}
+      <CustomBtn text="Send File" />
+
+      <FormSection title="문제 유형 선택">
+        <RadioGroup
+          name="questionType"
+          options={[
+            { value: "multipleChoice", label: "객관식" },
+            { value: "essayQuestion", label: "주관식" },
+            { value: "shortAnswer", label: "단답형" },
+          ]}
+          selectedValue={questionTypeRadio}
+          onChange={handleQuestionTypeChange}
+        />
+      </FormSection>
+
+      {questionTypeRadio === "multipleChoice" && (
+        <FormSection title="보기 개수">
+          <InputText
+            type="number"
+            placeholder="선지 개수 입력"
+            value={optionsCount}
+            onChange={handleOptionsCountChange}
+          />
+        </FormSection>
+      )}
+
+      <FormSection title="문제수 입력">
+        <InputText
+          type="text"
+          placeholder="10"
+          value={questionsCount}
+          onChange={handleQuestionsCountChange}
+        />
+      </FormSection>
+
+      <FormSection title="언어 선택">
+        <RadioGroup
+          name="languageType"
+          options={[
+            { value: "kor", label: "한국어" },
+            { value: "eng", label: "영어" },
+          ]}
+          selectedValue={languageType}
+          onChange={handleLanguageTypeChange}
+        />
+      </FormSection>
+
+      <CustomBtn text="Create Question" />
     </ChecklistContainer>
   );
 };
@@ -153,7 +124,7 @@ const ChecklistContainer = styled.form`
   position: absolute;
   top: 2rem;
   left: 20rem;
-  border: 1px solid rgb(159, 159, 160);
+  /* border: 1px solid rgb(159, 159, 160); */
 `;
 
 const RadioInputs = styled.div`
@@ -300,50 +271,6 @@ const FileInput = styled.input`
     &:hover {
       background: #0d45a5;
     }
-  }
-`;
-
-const StyledButton = styled.button`
-  position: absolute;
-  margin-top: 1rem;
-  left: 30%;
-  display: inline-block;
-  border-radius: 7px;
-  border: none;
-  background: #1875ff;
-  color: white;
-  font-family: inherit;
-  text-align: center;
-  font-size: 13px;
-  box-shadow: 0px 14px 56px -11px #1875ff;
-  width: 10em;
-  padding: 1em;
-  transition: all 0.4s;
-  cursor: pointer;
-
-  &:hover span {
-    padding-right: 3.55em;
-  }
-
-  &:hover span:after {
-    opacity: 4; /* This should likely be 1 instead of 4 as opacity ranges from 0 to 1 */
-    right: 0;
-  }
-`;
-
-const ButtonSpan = styled.span`
-  cursor: pointer;
-  display: inline-block;
-  position: relative;
-  transition: 0.4s;
-
-  &:after {
-    /* content: "for free"; */
-    position: absolute;
-    opacity: 0;
-    top: 0;
-    right: -20px;
-    transition: 0.7s;
   }
 `;
 
