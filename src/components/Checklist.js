@@ -44,7 +44,7 @@ const Checklist = () => {
 
   const handleSendFile = async () => {
     //여기서 이제 파일을 백으로 보냄
-    //FormData 객체에 담아서 보낸다
+    //FormData 객체에 담아서 보낸다-> 일단 예시 내용 담아둠
     if (selectedFile) {
       //선텍된 파일이 있는 경우에만
 
@@ -106,11 +106,10 @@ const Checklist = () => {
           </DropContainer>
           <CustomBtn
             text="Send File"
-            textAfter=" to String"
+            textAfter=" 📨 "
             onClick={handleSendFile}
           />
         </Form>
-        {/* 파일 선택이 되면, 이걸 백에 보내서 string 변환해옴 */}
       </ChecklistItem>
 
       {fileUploaded && (
@@ -160,7 +159,7 @@ const Checklist = () => {
             />
           </FormSection>
 
-          <CustomBtn text="Create Question" textAfter=" to String" />
+          <CustomBtn text="Create Question" textAfter="  ✔️ " />
         </ChecklistItem>
       )}
     </ChecklistContainer>

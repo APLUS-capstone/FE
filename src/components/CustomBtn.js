@@ -2,7 +2,7 @@ import styled from "styled-components";
 const CustomBtn = ({ text, textAfter }) => {
   return (
     <StyledButton style={{ verticalAlign: "middle" }}>
-      <ButtonSpan>{text}</ButtonSpan>
+      <ButtonSpan textAfter={textAfter}>{text}</ButtonSpan>
     </StyledButton>
   );
 };
@@ -42,8 +42,8 @@ const ButtonSpan = styled.span`
   transition: 0.4s;
 
   &:after {
-    content: "{textAfter}";
-    /* position: absolute; */
+    content: "${(props) => props.textAfter || ""}";
+    position: absolute;
     opacity: 0;
     top: 0;
     right: -50px;
