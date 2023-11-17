@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 // import CustomBtn from "./CustomBtn";
 import RadioGroup from "./RadioGroup";
-
+import PdfString from "./PdfString";
 const FormSection = ({ title, children }) => {
   return (
     <div>
@@ -12,6 +12,7 @@ const FormSection = ({ title, children }) => {
   );
 };
 
+//파일 업로드 하는 부분
 const FileUploadSection = ({ onFileUpload }) => {
   const [selectedFile, setSelectedFile] = useState(null);
 
@@ -78,6 +79,7 @@ const FileUploadSection = ({ onFileUpload }) => {
   );
 };
 
+//문제 유형 선택하는 부분
 const ChecklistSection = ({ fileUploaded }) => {
   const [questionTypeRadio, setQuestionTypeRadio] = useState("multipleChoice");
   const [languageType, setLanguageType] = useState("kor");
@@ -121,14 +123,14 @@ const ChecklistSection = ({ fileUploaded }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const formData = {
+    const QuestionData = {
       questionType: questionTypeValue,
       optionsCount:
         questionTypeRadio === "multipleChoice" ? parseInt(optionsCount, 10) : 0,
       questionsCount: parseInt(questionsCount, 10) || 0, //정수값
       language: parseInt(languageType, 10), //정수값
     };
-    console.log(formData); //나중에 DB에 보내야하는 부분이 될것임 (사용자가 입력한 문제 폼)
+    console.log(QuestionData); //나중에 DB에 보내야하는 부분이 될것임 (사용자가 입력한 문제 폼)
   };
 
   return (
@@ -186,6 +188,12 @@ const ChecklistSection = ({ fileUploaded }) => {
     )
   );
 };
+//백에서 String 받아온 부분,
+const StringReturned = ({ fileUploaded }) => {
+  const exampleString =
+    " PDF 가 string 으로 변환된 부분 - Market Share (13 Aug. 202https://w3techs.com/technologies) Server-side programming languages for";
+  return fileUploaded && <PdfString string={exampleString} />;
+};
 
 const Checklist = () => {
   const [fileUploaded, setFileUploaded] = useState(false);
@@ -193,14 +201,24 @@ const Checklist = () => {
     setFileUploaded(true);
   };
   return (
-    <ChecklistContainer>
-      <FileUploadSection onFileUpload={handleFileUpload} />
-      <ChecklistSection fileUploaded={fileUploaded} />
-    </ChecklistContainer>
+    <div>
+      <ChecklistContainer>
+        <FileUploadSection onFileUpload={handleFileUpload} />
+        <ChecklistSection fileUploaded={fileUploaded} />
+      </ChecklistContainer>
+
+      <StringReturned fileUploaded={fileUploaded} />
+    </div>
   );
 };
 
 //////////////////////
+// const MainpageWrapper = styled.div`
+//   display: flex;
+//   flex-direction: column;
+//   align-items: center;
+//   justify-content: center;
+// `;
 const ChecklistContainer = styled.div`
   display: flex;
   flex-direction: row;
