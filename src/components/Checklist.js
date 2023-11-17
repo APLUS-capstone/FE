@@ -1,56 +1,41 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import CustomBtn from "./CustomBtn";
+// import CustomBtn from "./CustomBtn";
 import RadioGroup from "./RadioGroup";
+import PdfString from "./PdfString";
+const FormSection = ({ title, children }) => {
+  return (
+    <div>
+      <h3>{title}</h3>
+      {children}
+    </div>
+  );
+};
 
-const Checklist = () => {
-  const [fileUploaded, setFileUploaded] = useState(false);
+//파일 업로드 하는 부분
+const FileUploadSection = ({ onFileUpload }) => {
   const [selectedFile, setSelectedFile] = useState(null);
-  const [questionTypeRadio, setQuestionTypeRadio] = useState("multipleChoice"); //문제유형
-  const [languageType, setLanguageType] = useState("kor"); // 언어
-  const [optionsCount, setOptionsCount] = useState(0); // 보기 수
-  const [questionsCount, setQuestionsCount] = useState(""); //문제수
-
-  const FormSection = ({ title, children }) => {
-    return (
-      <div>
-        <h3>{title}</h3>
-        {children}
-      </div>
-    );
-  };
-
-  const handleQuestionTypeChange = (e) => {
-    setQuestionTypeRadio(e.target.value);
-  };
-  const handleLanguageTypeChange = (e) => {
-    setLanguageType(e.target.value);
-  };
-  const handleOptionsCountChange = (e) => {
-    setOptionsCount(e.target.value);
-  };
-
-  const handleQuestionsCountChange = (e) => {
-    setQuestionsCount(e.target.value);
-  };
 
   const handleFileChange = (e) => {
-    //파일 선택됨
     if (e.target.files.length > 0) {
+      e.preventDefault();
       setSelectedFile(e.target.files[0]);
-      setFileUploaded(true);
+      // onFileUpload(true);
     }
   };
 
-  const handleSendFile = async () => {
+  const handleSendFile = async (e) => {
     //여기서 이제 파일을 백으로 보냄
     //FormData 객체에 담아서 보낸다-> 일단 예시 내용 담아둠
+    e.preventDefault();
     if (selectedFile) {
       //선텍된 파일이 있는 경우에만
-
-      const formData = new FormData();
+      // e.preventDefault();
+      onFileUpload(true);
+      // console.log(selectedFile);
+      // const formData = new FormData();
       // formData.append("userId", userID);
-      formData.append("file", selectedFile);
+      // formData.append("file", selectedFile);
 
       // axios({
       //   method: "post",
@@ -70,102 +55,170 @@ const Checklist = () => {
       console.log("No file selected");
     }
   };
-
-  //각각 입력받은 form 을 확인하는 함수
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const formData = {
-      questionType: questionTypeRadio,
-      optionsCount:
-        questionTypeRadio === "multipleChoice" ? parseInt(optionsCount, 10) : 0,
-      questionsCount: parseInt(questionsCount, 10) || 0, //정수값
-      language: languageType,
-    };
-    console.log(formData); //나중에 DB에 보내야하는 부분이 될것임 (사용자가 입력한 문제 폼)
-  };
-
   return (
-    <ChecklistContainer
-      onSubmit={handleSubmit}
-      isMultipleChoice={questionTypeRadio === "multipleChoice"}
-    >
-      <ChecklistItem>
-        <Form>
-          <FormTitle>Upload your file</FormTitle>
-          <FormParagraph>PDF file</FormParagraph>
-          <DropContainer htmlFor="file-input">
-            <DropTitle>Drop files here</DropTitle>
-            or
-            <FileInput
-              type="file"
-              accept=".pdf"
-              required
-              id="file-input"
-              onChange={handleFileChange}
-            />
-          </DropContainer>
-          <CustomBtn
-            text="Send File"
-            textAfter=" 📨 "
-            onClick={handleSendFile}
+    <ChecklistItem>
+      <Form>
+        <FormTitle>Upload your file</FormTitle>
+        <FormParagraph>PDF file</FormParagraph>
+        <DropContainer htmlFor="file-input">
+          <DropTitle>Drop files here</DropTitle>
+          or
+          <FileInput
+            type="file"
+            accept=".pdf"
+            required
+            id="file-input"
+            onChange={handleFileChange}
           />
-        </Form>
-      </ChecklistItem>
-
-      {fileUploaded && (
-        <ChecklistItem>
-          <FormSection title="문제 유형 선택">
-            <RadioGroup
-              name="questionType"
-              options={[
-                { value: "multipleChoice", label: "객관식" },
-                { value: "essayQuestion", label: "주관식" },
-                { value: "shortAnswer", label: "단답형" },
-              ]}
-              selectedValue={questionTypeRadio}
-              onChange={handleQuestionTypeChange}
-            />
-          </FormSection>
-
-          {questionTypeRadio === "multipleChoice" && (
-            <FormSection title="보기 개수">
-              <InputText
-                type="number"
-                placeholder="선지 개수 입력"
-                value={optionsCount}
-                onChange={handleOptionsCountChange}
-              />
-            </FormSection>
-          )}
-
-          <FormSection title="문제수 입력">
-            <InputText
-              type="text"
-              placeholder="10"
-              value={questionsCount}
-              onChange={handleQuestionsCountChange}
-            />
-          </FormSection>
-
-          <FormSection title="언어 선택">
-            <RadioGroup
-              name="languageType"
-              options={[
-                { value: "kor", label: "한국어" },
-                { value: "eng", label: "영어" },
-              ]}
-              selectedValue={languageType}
-              onChange={handleLanguageTypeChange}
-            />
-          </FormSection>
-
-          <CustomBtn text="Create Question" textAfter="  ✔️ " />
-        </ChecklistItem>
-      )}
-    </ChecklistContainer>
+        </DropContainer>
+        <StyledButton onClick={handleSendFile}>
+          <ButtonSpan textAfter=" 📨 ">Send File</ButtonSpan>
+        </StyledButton>
+      </Form>
+    </ChecklistItem>
   );
 };
 
+//문제 유형 선택하는 부분
+const ChecklistSection = ({ fileUploaded }) => {
+  const [questionTypeRadio, setQuestionTypeRadio] = useState("multipleChoice");
+  const [languageType, setLanguageType] = useState("kor");
+  const [optionsCount, setOptionsCount] = useState(0);
+  const [questionsCount, setQuestionsCount] = useState("");
+
+  const handleQuestionTypeChange = (e) => {
+    setQuestionTypeRadio(e.target.value);
+  };
+  const handleLanguageTypeChange = (e) => {
+    setLanguageType(e.target.value);
+  };
+  const handleOptionsCountChange = (e) => {
+    setOptionsCount(e.target.value);
+  };
+
+  const handleQuestionsCountChange = (e) => {
+    setQuestionsCount(e.target.value);
+  };
+
+  // 문제 유형을 숫자로 변환
+  let questionTypeValue;
+  switch (questionTypeRadio) {
+    //객관식 = 1
+    case "multipleChoice":
+      questionTypeValue = 1;
+      break;
+    //주관식 = 2
+    case "essayQuestion":
+      questionTypeValue = 2;
+      break;
+    //서술형 = 3
+    case "shortAnswer":
+      questionTypeValue = 3;
+      break;
+    default:
+      questionTypeValue = 0; // 기본값 혹은 오류 처리
+  }
+
+  //각각 입력받은 문제입력 form 을 확인하는 함수
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const QuestionData = {
+      questionType: questionTypeValue,
+      optionsCount:
+        questionTypeRadio === "multipleChoice" ? parseInt(optionsCount, 10) : 0,
+      questionsCount: parseInt(questionsCount, 10) || 0, //정수값
+      language: parseInt(languageType, 10), //정수값
+    };
+    console.log(QuestionData); //나중에 DB에 보내야하는 부분이 될것임 (사용자가 입력한 문제 폼)
+  };
+
+  return (
+    fileUploaded && (
+      <ChecklistItem>
+        <FormSection title="문제 유형 선택">
+          <RadioGroup
+            name="questionType"
+            options={[
+              { value: "multipleChoice", label: "객관식" },
+              { value: "essayQuestion", label: "주관식" },
+              { value: "shortAnswer", label: "단답형" },
+            ]}
+            selectedValue={questionTypeRadio}
+            onChange={handleQuestionTypeChange}
+          />
+        </FormSection>
+
+        {questionTypeRadio === "multipleChoice" && (
+          <FormSection title="보기 개수">
+            <InputText
+              type="number"
+              placeholder="선지 개수 입력"
+              value={optionsCount}
+              onChange={handleOptionsCountChange}
+            />
+          </FormSection>
+        )}
+
+        <FormSection title="문제수 입력">
+          <InputText
+            type="text"
+            placeholder="10"
+            value={questionsCount}
+            onChange={handleQuestionsCountChange}
+          />
+        </FormSection>
+
+        <FormSection title="언어 선택">
+          <RadioGroup
+            name="languageType"
+            options={[
+              { value: "1", label: "한국어" },
+              { value: "2", label: "영어" },
+            ]}
+            selectedValue={languageType}
+            onChange={handleLanguageTypeChange}
+          />
+        </FormSection>
+
+        <StyledButton onClick={handleSubmit}>
+          <ButtonSpan textAfter=" ✔️ ">Create Question</ButtonSpan>
+        </StyledButton>
+      </ChecklistItem>
+    )
+  );
+};
+//백에서 String 받아온 부분,
+const StringReturned = ({ fileUploaded }) => {
+  const exampleString =
+    " PDF 가 string 으로 변환된 부분 - Market Share (13 Aug. 202https://w3techs.com/technologies) Server-side programming languages for";
+  return fileUploaded && <PdfString string={exampleString} />;
+};
+
+const Checklist = () => {
+  const [fileUploaded, setFileUploaded] = useState(false);
+  const handleFileUpload = () => {
+    setFileUploaded(true);
+  };
+  return (
+    <div>
+      <ChecklistContainer>
+        <FileUploadSection onFileUpload={handleFileUpload} />
+        <ChecklistSection fileUploaded={fileUploaded} />
+      </ChecklistContainer>
+
+      <StringReturned fileUploaded={fileUploaded} />
+    </div>
+  );
+};
+
+//////////////////////
+// const MainpageWrapper = styled.div`
+//   display: flex;
+//   flex-direction: column;
+//   align-items: center;
+//   justify-content: center;
+// `;
 const ChecklistContainer = styled.div`
   display: flex;
   flex-direction: row;
@@ -288,6 +341,51 @@ const FileInput = styled.input`
     &:hover {
       background: #0d45a5;
     }
+  }
+`;
+
+////버튼
+const StyledButton = styled.button`
+  /* position: absolute; */
+  margin-top: 1rem;
+  left: 30%;
+  display: inline-block;
+  border-radius: 7px;
+  border: none;
+  background: #1875ff;
+  color: white;
+  font-family: inherit;
+  text-align: center;
+  font-size: 13px;
+  box-shadow: 0px 14px 56px -11px #1875ff;
+  width: 13rem;
+  padding: 1em;
+  transition: all 0.4s;
+  cursor: pointer;
+
+  &:hover span {
+    padding-right: 3.55em;
+  }
+
+  &:hover span:after {
+    opacity: 4;
+    right: 0;
+  }
+`;
+
+const ButtonSpan = styled.span`
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.4s;
+
+  &:after {
+    content: "${(props) => props.textAfter || ""}";
+    position: absolute;
+    opacity: 0;
+    top: 0;
+    right: -50px;
+    transition: 0.7s;
   }
 `;
 
