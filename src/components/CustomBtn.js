@@ -1,7 +1,11 @@
 import styled from "styled-components";
-const CustomBtn = ({ text, textAfter }) => {
+const CustomBtn = ({ text, textAfter, onCLick }) => {
   return (
-    <StyledButton style={{ verticalAlign: "middle" }}>
+    <StyledButton
+      type="button"
+      style={{ verticalAlign: "middle" }}
+      onClick={onCLick}
+    >
       <ButtonSpan textAfter={textAfter}>{text}</ButtonSpan>
     </StyledButton>
   );
