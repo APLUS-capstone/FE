@@ -3,7 +3,7 @@ import "./App.css";
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Sidebar from "./components/Sidebar";
 import Checklist from "./components/Checklist";
-import ChatRoom from "./pages/chatRoom/Chatroom";
+import ChatRoom from "./pages/chatRoom/chatroom";
 import Main from "./pages/Login/Main";
 function App() {
   return (
