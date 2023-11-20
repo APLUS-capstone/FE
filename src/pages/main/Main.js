@@ -1,10 +1,11 @@
 import React from "react";
 import styled from "styled-components";
-
+import Checklist from "../../components/Checklist";
 const Main = () => {
   return (
     <MainContainer>
-      <div>hi</div>
+      {/* <div>hi</div> */}
+      <Checklist />
     </MainContainer>
   );
 };
