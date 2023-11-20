@@ -4,7 +4,6 @@ import Checklist from "../../components/Checklist";
 const Main = () => {
   return (
     <MainContainer>
-      {/* <div>hi</div> */}
       <Checklist />
     </MainContainer>
   );
@@ -13,8 +12,6 @@ const Main = () => {
 export default Main;
 
 const MainContainer = styled.div`
-  background-color: black;
-  color: white;
   min-height: 100vh;
   width: 100%;
   display: flex;
