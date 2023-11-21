@@ -1,12 +1,12 @@
 import styled from "styled-components";
-const CustomBtn = ({ text, onClick }) => {
+const CustomBtnText = ({ text, textAfter, onClick }) => {
   return (
     <StyledButton
       type="button"
       style={{ verticalAlign: "middle" }}
       onClick={onClick}
     >
-      <ButtonSpan>{text}</ButtonSpan>
+      <ButtonSpan textAfter={textAfter}>{text}</ButtonSpan>
     </StyledButton>
   );
 };
@@ -28,10 +28,30 @@ const StyledButton = styled.button`
   padding: 1em;
   transition: all 0.4s;
   cursor: pointer;
+
+  &:hover span {
+    padding-right: 3.55em;
+  }
+
+  &:hover span:after {
+    opacity: 4;
+    right: 0;
+  }
 `;
 
 const ButtonSpan = styled.span`
+  cursor: pointer;
   display: inline-block;
   position: relative;
+  transition: 0.4s;
+
+  &:after {
+    content: "${(props) => props.textAfter || ""}";
+    position: absolute;
+    opacity: 0;
+    top: 0;
+    right: -50px;
+    transition: 0.7s;
+  }
 `;
-export default CustomBtn;
+export default CustomBtnText;
