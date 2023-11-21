@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import WrongIcon from "../../assets/images/wrongIcon.png"; //wrongIcon은 svg 변환 안돼서 그냥 png로
 import { ReactComponent as CorrectIcon } from "../../assets/images/answerGrade.svg";
-import CustomBtn from "../../components/CustomBtn";
+import { CustomBtn } from "../../components/CustomButtons";
 const dummy_questions = [
   {
     question:
@@ -45,7 +45,7 @@ const Chatroom = () => {
   const [answers, setAnswers] = useState({});
   const [results, setResults] = useState(null);
 
-  //객관식 문제가 오면 a,b,c,d 기준으로 띄어쓰기를 해줘야함
+  //객관식 문제가 오면 a,b,c,d 기준으로 띄어쓰기 해줘야함
   const formatQuestionText = (text) => {
     return text.replace(/([ABCDE]\))/g, "\n$1) ");
   };
