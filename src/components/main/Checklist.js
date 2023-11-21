@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import RadioGroup from "../RadioGroup";
-import CustomBtnText from "../CustomBtn2";
+import { CustomBtnText } from "../CustomButtons";
 import styled from "styled-components";
 import FormSection from "./FormSection";
 const Checklist = ({ fileUploaded, setIsLoading }) => {

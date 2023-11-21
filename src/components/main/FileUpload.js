@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import CustomBtnText from "../CustomBtn2";
+import { CustomBtnText } from "../CustomButtons";
 //파일 업로드 하는 부분
 
 const FileUpload = ({ onFileUpload }) => {
