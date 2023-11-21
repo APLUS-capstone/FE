@@ -49,9 +49,6 @@ const SidebarContainer = styled.div`
   width: 17rem;
   height: 100vh;
   background-color: #45504f;
-  position: absolute;
-  left: 0;
-  top: 0;
   overflow: hidden;
 `;
 
