@@ -46,8 +46,38 @@ const Chatroom = () => {
   const [results, setResults] = useState(null);
 
   //객관식 문제가 오면 a,b,c,d 기준으로 띄어쓰기 해줘야함
-  const formatQuestionText = (text) => {
-    return text.replace(/([ABCDE]\))/g, "\n$1) ");
+  const formatQuestionText = (text, questionIndex) => {
+    return text.split("\n").map((line, index) => {
+      if (
+        ["A)", "B)", "C)", "D)", "E)"].includes(line.trim().substring(0, 2))
+      ) {
+        const isCorrect = dummy_questions[questionIndex].answer === line[0];
+        const isSelected = answers[questionIndex] === line[0];
+        const isWrongAnswered = results && !results[questionIndex].isCorrect;
+
+        return (
+          <div key={index}>
+            <input
+              type="radio"
+              name={`question-${questionIndex}`}
+              value={line[0]}
+              onChange={() => handleAnswerChange(questionIndex, line[0])}
+              disabled={results != null}
+            />
+            <span
+              style={{
+                fontWeight: isSelected ? "bold" : "normal",
+                color: isWrongAnswered && isCorrect ? "red" : "black",
+              }}
+            >
+              {" " + line.substring()}
+            </span>
+          </div>
+        );
+      } else {
+        return <div key={index}>{line}</div>;
+      }
+    });
   };
 
   const handleAnswerChange = (questionIndex, selectedAnswer) => {
@@ -63,8 +93,11 @@ const Chatroom = () => {
     setResults(evaluatedResults);
   };
 
-  const isOptionCorrect = (questionIndex, option) => {
-    return dummy_questions[questionIndex].answer === option;
+  const handleClear = () => {
+    //다시 푸는 부분
+    setAnswers({});
+    setResults("");
+    setResults(null);
   };
 
   return (
@@ -86,56 +119,22 @@ const Chatroom = () => {
                 )}
               </IconContainer>
             )}
-            <span>Question {index + 1}</span>
+            <h3> 문제 {index + 1}번 </h3>
           </QuestionHeader>
-          <div>
-            {formatQuestionText(q.question)
-              .split("\n")
-              .map((line, key) => (
-                <React.Fragment key={key}>
-                  {line}
-                  <br />
-                </React.Fragment>
-              ))}
-          </div>
-          {["A", "B", "C", "D", "E"].map((choice) => (
-            <Label
-              key={choice}
-              isCorrect={isOptionCorrect(index, choice)}
-              isSelected={answers[index] === choice}
-              isAnswered={results != null}
-            >
-              <input
-                type="radio"
-                name={`question-${index}`}
-                value={choice}
-                onChange={() => handleAnswerChange(index, choice)}
-                disabled={results != null}
-              />
-              {choice}
-              {results &&
-                !results[index].isCorrect &&
-                isOptionCorrect(index, choice) && <span> (정답)</span>}
-            </Label>
-          ))}
+          <div>{formatQuestionText(q.question, index)}</div>
+
+          {results && (
+            <SolutionBox>
+              <p> {index + 1}번 상세 설명:</p>
+              <p>{q.solution}</p>
+            </SolutionBox>
+          )}
         </QuestionContainer>
       ))}
-      <CustomBtn onClick={handleSubmit} text="채점하기" />
-
-      {results && (
-        <div>
-          {results.map((result, index) => (
-            <div key={index}>
-              {
-                <p>
-                  Question {index + 1} explanation: <br />
-                  {result.solution}
-                </p>
-              }
-            </div>
-          ))}
-        </div>
-      )}
+      <ButtonContainer>
+        <CustomBtn onClick={handleSubmit} text="채점하기" />
+        <CustomBtn onClick={handleClear} text="다시풀기" />
+      </ButtonContainer>
     </ChatroomContainer>
   );
 };
@@ -159,13 +158,20 @@ const QuestionHeader = styled.div`
 `;
 const IconContainer = styled.div`
   position: absolute;
-  left: -3px;
-  top: -10px;
+  left: -5px;
+  top: 0px;
 `;
-const Label = styled.label`
-  color: ${(props) =>
-    props.isCorrect && props.isAnswered && !props.isSelected ? "red" : "black"};
-  font-weight: ${(props) => (props.isSelected ? "bold" : "normal")};
+
+const SolutionBox = styled.div`
+  padding: 10px;
+  margin-top: 15px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+`;
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: space-around;
 `;
 
 export default Chatroom;
