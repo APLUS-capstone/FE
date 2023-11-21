@@ -3,6 +3,8 @@ import styled from "styled-components";
 import CustomBtnText from "./CustomBtn2";
 import RadioGroup from "./RadioGroup";
 import PdfString from "./PdfString";
+import Loader from "../pages/loader/Loader";
+import { useNavigate } from "react-router-dom";
 const FormSection = ({ title, children }) => {
   return (
     <div>
@@ -83,11 +85,13 @@ const FileUploadSection = ({ onFileUpload }) => {
 };
 
 //문제 유형 선택하는 부분
-const ChecklistSection = ({ fileUploaded }) => {
+const ChecklistSection = ({ fileUploaded, setIsLoading }) => {
   const [questionTypeRadio, setQuestionTypeRadio] = useState("multipleChoice");
   const [languageType, setLanguageType] = useState("1");
   const [optionsCount, setOptionsCount] = useState(0);
   const [questionsCount, setQuestionsCount] = useState("");
+
+  const navigate = useNavigate();
 
   const handleQuestionTypeChange = (e) => {
     setQuestionTypeRadio(e.target.value);
@@ -125,6 +129,7 @@ const ChecklistSection = ({ fileUploaded }) => {
   //각각 입력받은 문제입력 form 을 확인하는 함수
   const handleSubmit = (e) => {
     e.preventDefault();
+    setIsLoading(true);
 
     const QuestionData = {
       questionType: questionTypeValue,
@@ -133,7 +138,32 @@ const ChecklistSection = ({ fileUploaded }) => {
       questionsCount: parseInt(questionsCount, 10) || 0, //정수값
       language: parseInt(languageType, 10), //정수값
     };
-    console.log(QuestionData); //나중에 DB에 보내야하는 부분이 될것임 (사용자가 입력한 문제 폼)
+    console.log(QuestionData);
+
+    //나중에 DB에 보내야하는 부분이 될것임 (사용자가 입력한 문제 폼)
+    // fetch("API주소", {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify(QuestionData),
+    // })
+    //   .then((response) => response.json())
+    //   .then((data) => {
+    //     setIsLoading(false); //이제 로딩 넘추고
+    //     navigate("/chatroom/${key}"); // chatroom으로 이동
+    //   })
+    //   .catch((error) => {
+    //     console.error("Error:", error);
+    //     setIsLoading(false); //에러면
+    //   });
+
+    setIsLoading(false);
+    //일단 임시로 loader 에 5초 있다가, chatroom으로 이동하게
+    navigate("/loader");
+    setTimeout(() => {
+      navigate("/chatroom/0");
+    }, 5000);
   };
 
   return (
@@ -201,16 +231,24 @@ const StringReturned = ({ fileUploaded }) => {
 
 const Checklist = () => {
   const [fileUploaded, setFileUploaded] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
   const handleFileUpload = () => {
     setFileUploaded(true);
   };
   return (
     <div>
-      <ChecklistContainer>
-        <FileUploadSection onFileUpload={handleFileUpload} />
-        <ChecklistSection fileUploaded={fileUploaded} />
-      </ChecklistContainer>
-
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <ChecklistContainer>
+          <FileUploadSection onFileUpload={handleFileUpload} />
+          <ChecklistSection
+            fileUploaded={fileUploaded}
+            setIsLoading={setIsLoading}
+          />
+        </ChecklistContainer>
+      )}
       <StringReturned fileUploaded={fileUploaded} />
     </div>
   );
