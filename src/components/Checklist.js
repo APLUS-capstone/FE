@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-// import CustomBtn from "./CustomBtn";
+import CustomBtnText from "./CustomBtn2";
 import RadioGroup from "./RadioGroup";
 import PdfString from "./PdfString";
 const FormSection = ({ title, children }) => {
@@ -71,9 +71,12 @@ const FileUploadSection = ({ onFileUpload }) => {
             onChange={handleFileChange}
           />
         </DropContainer>
-        <StyledButton onClick={handleSendFile}>
-          <ButtonSpan textAfter=" 📨 ">Send File</ButtonSpan>
-        </StyledButton>
+
+        <CustomBtnText
+          text="Send File"
+          textAfter="📨"
+          onClick={handleSendFile}
+        />
       </Form>
     </ChecklistItem>
   );
@@ -82,7 +85,7 @@ const FileUploadSection = ({ onFileUpload }) => {
 //문제 유형 선택하는 부분
 const ChecklistSection = ({ fileUploaded }) => {
   const [questionTypeRadio, setQuestionTypeRadio] = useState("multipleChoice");
-  const [languageType, setLanguageType] = useState("kor");
+  const [languageType, setLanguageType] = useState("1");
   const [optionsCount, setOptionsCount] = useState(0);
   const [questionsCount, setQuestionsCount] = useState("");
 
@@ -180,10 +183,11 @@ const ChecklistSection = ({ fileUploaded }) => {
             onChange={handleLanguageTypeChange}
           />
         </FormSection>
-
-        <StyledButton onClick={handleSubmit}>
-          <ButtonSpan textAfter=" ✔️ ">Create Question</ButtonSpan>
-        </StyledButton>
+        <CustomBtnText
+          text="Create Question"
+          textAfter="✔️"
+          onClick={handleSubmit}
+        />
       </ChecklistItem>
     )
   );
@@ -212,17 +216,9 @@ const Checklist = () => {
   );
 };
 
-//////////////////////
-// const MainpageWrapper = styled.div`
-//   display: flex;
-//   flex-direction: column;
-//   align-items: center;
-//   justify-content: center;
-// `;
 const ChecklistContainer = styled.div`
   display: flex;
   flex-direction: row;
-  /* justify-content: space-around; */
   gap: 10rem;
   width: 60rem;
   //객관식일때는 선지 개수 옵션이 늘어나니까, 화면 크기를 늘린다
@@ -341,51 +337,6 @@ const FileInput = styled.input`
     &:hover {
       background: #0d45a5;
     }
-  }
-`;
-
-////버튼
-const StyledButton = styled.button`
-  /* position: absolute; */
-  margin-top: 1rem;
-  left: 30%;
-  display: inline-block;
-  border-radius: 7px;
-  border: none;
-  background: #1875ff;
-  color: white;
-  font-family: inherit;
-  text-align: center;
-  font-size: 13px;
-  box-shadow: 0px 14px 56px -11px #1875ff;
-  width: 13rem;
-  padding: 1em;
-  transition: all 0.4s;
-  cursor: pointer;
-
-  &:hover span {
-    padding-right: 3.55em;
-  }
-
-  &:hover span:after {
-    opacity: 4;
-    right: 0;
-  }
-`;
-
-const ButtonSpan = styled.span`
-  cursor: pointer;
-  display: inline-block;
-  position: relative;
-  transition: 0.4s;
-
-  &:after {
-    content: "${(props) => props.textAfter || ""}";
-    position: absolute;
-    opacity: 0;
-    top: 0;
-    right: -50px;
-    transition: 0.7s;
   }
 `;
 
