@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React, { useState,useContext } from "react";
 import styled from "styled-components";
 import { CustomBtnText } from "../CustomButtons";
+import ChatRoomsContext from "../../ChatRoomsContext"; 
+
 //파일 업로드 하는 부분
 
 const FileUpload = ({ onFileUpload }) => {
   const [selectedFile, setSelectedFile] = useState(null);
-
+  const { setChatId } = useContext(ChatRoomsContext);
   const handleFileChange = (e) => {
     if (e.target.files.length > 0) {
       e.preventDefault();
@@ -21,6 +23,10 @@ const FileUpload = ({ onFileUpload }) => {
     if (selectedFile) {
       //선텍된 파일이 있는 경우에만
       // e.preventDefault();
+      
+      const tempChatId = Date.now();//임시 chatid생성
+      setChatId(tempChatId);
+
       onFileUpload(true);
       // console.log(selectedFile);
       // const formData = new FormData();
@@ -40,6 +46,7 @@ const FileUpload = ({ onFileUpload }) => {
       //     console.log("요청실패");
       //     console.log(error);
       //   });
+
     } else {
       //선택된 파일이 없음
       console.log("No file selected");
