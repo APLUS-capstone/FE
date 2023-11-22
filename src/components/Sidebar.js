@@ -1,16 +1,16 @@
 import styled from "styled-components";
 import { ReactComponent as PlusButton } from "../assets/images/plus.svg";
 import { ReactComponent as ChatIcon } from "../assets/images/textballon.svg";
-import { useNavigate } from 'react-router-dom';
-import { useContext } from 'react';
+import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
 import ChatRoomsContext from "../ChatRoomsContext";
 const Sidebar = () => {
   const navigate = useNavigate();
-  const { chatRooms } = useContext(ChatRoomsContext); 
+  const { chatRooms } = useContext(ChatRoomsContext);
 
   const handleNewChat = () => {
     // addNewChatRoom();
-    navigate('/main');
+    navigate("/main");
   };
 
   const handleChatRoomClick = (chatId) => {
@@ -90,11 +90,15 @@ const NewbuttonContainer = styled.button`
 `;
 
 const ChatItem = styled.div`
-  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding-left: 1rem;
   background: #45504f;
   border-radius: 0.5rem;
   font-size: 1rem;
   height: 3vh;
+  color: #b3b3b3;
 `;
 
 export default Sidebar;
