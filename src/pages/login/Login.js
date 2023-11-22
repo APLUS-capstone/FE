@@ -3,7 +3,7 @@ import styled from "styled-components";
 import KakaoLoginButton from "../../assets/images/kakao_login_large_narrow.png";
 const Login = () => {
   const Rest_api_key = "01edef910fa2573903206bddf92be765";
-  const redirect_uri = "http://localhost:3000/";
+  const redirect_uri = "https://aplus-hsdd.netlify.app/main";
   const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${Rest_api_key}&redirect_uri=${redirect_uri}&response_type=code`;
   const handleLogin = () => {
     window.location.href = kakaoURL;
