@@ -7,21 +7,25 @@ import Main from "./pages/main/Main";
 import Loader from "./pages/loader/Loader";
 import Login from "./pages/login/Login";
 import styled from "styled-components";
-
+import { ChatRoomsProvider } from "./ChatRoomsContext";
 function App() {
   return (
+
     <Router>
-      <MainContainer>
-        <Sidebar />
-        <ContentArea>
-          <Routes>
+      <ChatRoomsProvider>
+        <MainContainer>
+          <Sidebar />
+          <ContentArea>
+            <Routes>
             <Route path="/" element={<Login />} />
             <Route path="/chatroom/:chatId" element={<ChatRoom />} />
             <Route path="/loader" element={<Loader />} />
             <Route path="/main" element={<Main />} />
-          </Routes>
-        </ContentArea>
-      </MainContainer>
+
+            </Routes>
+          </ContentArea>
+        </MainContainer>
+      </ChatRoomsProvider>
     </Router>
   );
 }

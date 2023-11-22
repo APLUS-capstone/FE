@@ -1,13 +1,21 @@
-import React, { useState } from "react";
 import styled from "styled-components";
 import { ReactComponent as PlusButton } from "../assets/images/plus.svg";
 import { ReactComponent as ChatIcon } from "../assets/images/textballon.svg";
-import useChatRoomNavigation from "../hook/useChatRoomNavigation";
-
+import { useNavigate } from 'react-router-dom';
+import { useContext } from 'react';
+import ChatRoomsContext from "../ChatRoomsContext";
 const Sidebar = () => {
-  const [chatRooms, setChatRooms] = useState([]);
-  const { handleNewChat, handleChatRoomClick } = useChatRoomNavigation(chatRooms, setChatRooms);
+  const navigate = useNavigate();
+  const { chatRooms } = useContext(ChatRoomsContext); 
 
+  const handleNewChat = () => {
+    // addNewChatRoom();
+    navigate('/main');
+  };
+
+  const handleChatRoomClick = (chatId) => {
+    navigate(`/chatRoom/${chatId}`); // Navigate to the chat room when clicked
+  };
   return (
     <SidebarContainer>
       <NameContainer>APLUS</NameContainer>
