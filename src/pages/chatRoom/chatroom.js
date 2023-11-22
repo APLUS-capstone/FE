@@ -171,7 +171,8 @@ const SolutionBox = styled.div`
 `;
 const ButtonContainer = styled.div`
   display: flex;
-  justify-content: space-around;
+  justify-content: flex-start;
+  gap: 20px;
 `;
 
 export default Chatroom;
