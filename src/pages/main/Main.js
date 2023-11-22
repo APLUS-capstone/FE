@@ -8,7 +8,7 @@ import Checklist from "../../components/main/Checklist";
 //백에서 String 받아온 부분,
 const StringReturned = ({ fileUploaded }) => {
   const exampleString =
-    " PDF 가 string 으로 변환된 부분 - 예시 : Market Share (13 Aug. 202https://w3techs.com/technologies) Server-side programming languages for";
+  "Type Checking: Wrap-up\n■ As we have seen, a program can be decomposed into \nsmaller subcomponents\n■ Therefore, the basic idea is to traverse into those \nsubcomponents\n▪ If all the subcomponent are free from errors, then the whole \nprogram is also free from errors\n■ Although not explicitly explained, other semantic errors \ncan be easily detected during this process as well\n▪ Ex) Use of undeclared identifier\n▪ Ex) Redeclaration of identifier\n18\n";
   return fileUploaded && <PdfString string={exampleString} />;
 };
 
