@@ -38,7 +38,8 @@ const StyledButton1 = styled.button`
   text-align: center;
   font-size: 13px;
   box-shadow: 0px 14px 56px -11px #1875ff;
-  width: 13rem;
+  width: 11.4375rem;
+  height: 2.8125rem;
   padding: 1em;
   transition: all 0.4s;
   cursor: pointer;
